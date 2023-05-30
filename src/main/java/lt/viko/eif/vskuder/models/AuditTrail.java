@@ -3,7 +3,6 @@ package lt.viko.eif.vskuder.models;
 public class AuditTrail {
     private Integer auditID;
     private User registeredID;
-    private Guest guestID;
     private String action;
     private String timestamp;
 
@@ -41,20 +40,11 @@ public class AuditTrail {
         this.registeredID = registeredID;
     }
 
-    public Guest getGuestID() {
-        return guestID;
-    }
-
-    public void setGuestID(Guest guestID) {
-        this.guestID = guestID;
-    }
-
     @Override
     public String toString() {
         return "AuditTrail\n{\n" +
                 "auditID: " + auditID + "\n" +
                 "registeredID: " + registeredID + "\n" +
-                "guestID: " + guestID + "\n" +
                 "action: " + action + "\n" +
                 "timestamp: " + timestamp + "\n" +
                 '}';

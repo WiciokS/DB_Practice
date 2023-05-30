@@ -23,12 +23,7 @@ public class AuditTrailDAO extends DAO{
             if (rs.next()) {
                 o = new AuditTrail();
                 o.setAuditID(rs.getInt("AuditID"));
-                Map.Entry<Guest, User> check = GeneralUserDAO.getGuestOrUser(id);
-                if (check.getKey() != null){
-                    o.setGuestID(check.getKey());
-                } else {
-                    o.setRegisteredID(check.getValue());
-                }
+                o.setRegisteredID(UserDAO.getUser(rs.getInt("UserID")));
                 o.setAction(rs.getString("Action"));
             }
 
@@ -45,9 +40,8 @@ public class AuditTrailDAO extends DAO{
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setInt(1, auditTrail.getRegisteredID().getUserID());
-            stmt.setInt(2, auditTrail.getGuestID().getUserID());
-            stmt.setString(3, auditTrail.getAction());
-            stmt.setString(4, auditTrail.getTimestamp());
+            stmt.setString(2, auditTrail.getAction());
+            stmt.setString(3, auditTrail.getTimestamp());
 
             int affectedRows = stmt.executeUpdate();
 
@@ -72,7 +66,7 @@ public class AuditTrailDAO extends DAO{
     }
 
     public static boolean updateAuditTrail(AuditTrail auditTrail) {
-        String sql = "UPDATE AuditTrail SET RegisteredID = ?, GuestID = ?, Action = ?, Timestamp = ? WHERE AuditID = ?";
+        String sql = "UPDATE AuditTrail SET UserID = ?, Action = ?, Timestamp = ? WHERE AuditID = ?";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(sql)) {

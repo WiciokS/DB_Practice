@@ -32,6 +32,27 @@ public class ProgramListRegisteredDAO extends DAO{
         return associations;
     }
 
+    public static List<RegisteredUserProgramAssociation> getProgramListRegistered() {
+        List<RegisteredUserProgramAssociation> associations = new ArrayList<>();
+        String sql = "SELECT * FROM ProgramList_Registered";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                RegisteredUserProgramAssociation o = new RegisteredUserProgramAssociation();
+                o.setUserID(UserDAO.getUser(rs.getInt("UserID")));
+                o.setProgramID(AIProgramDAO.getAIProgram(rs.getInt("ProgramID")));
+                associations.add(o);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return associations;
+    }
+
     public static RegisteredUserProgramAssociation createRegisteredUserProgramAssociation(User user, AIProgram aiProgram) {
         String sql = "INSERT INTO ProgramList_Registered (UserID, ProgramID) VALUES (?, ?)";
 

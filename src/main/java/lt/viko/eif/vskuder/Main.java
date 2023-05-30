@@ -1,6 +1,7 @@
 package lt.viko.eif.vskuder;
 
 import lt.viko.eif.vskuder.DAO.*;
+import lt.viko.eif.vskuder.GUI.MainForm;
 import lt.viko.eif.vskuder.models.AIProgramRating;
 import lt.viko.eif.vskuder.models.AIProgramType;
 import lt.viko.eif.vskuder.models.Description;
@@ -19,8 +20,7 @@ private final String user = "root";
 private final String password = "root";*/
 public class Main {
     public static void main(String[] args) {
-        AIProgramRating o = AIProgramRatingDAO.getAIProgramRating(1);
-        System.out.println(o);
+        new MainForm();
     }
 }
 

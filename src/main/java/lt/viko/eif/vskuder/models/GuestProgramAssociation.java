@@ -3,6 +3,8 @@ package lt.viko.eif.vskuder.models;
 public class GuestProgramAssociation {
     private AIProgram programID;
 
+    private Guest guestID;
+
     public GuestProgramAssociation(){}
 
     public AIProgram getProgramID() {
@@ -17,6 +19,15 @@ public class GuestProgramAssociation {
     public String toString() {
         return "GuestProgramAssociation\n{\n" +
                 "programID: " + programID + "\n" +
+                "guestID: " + guestID + "\n" +
                 '}';
+    }
+
+    public Guest getGuestID() {
+        return guestID;
+    }
+
+    public void setGuestID(Guest guestID) {
+        this.guestID = guestID;
     }
 }

@@ -18,6 +18,7 @@ public class ProgramListGuestDAO extends DAO{
 
             while (rs.next()) {
                 GuestProgramAssociation o = new GuestProgramAssociation();
+                o.setGuestID(GuestDAO.getGuest(rs.getInt("GuestID")));
                 o.setProgramID(AIProgramDAO.getAIProgram(rs.getInt("ProgramID")));
                 associations.add(o);
             }
@@ -29,12 +30,13 @@ public class ProgramListGuestDAO extends DAO{
     }
 
     public static GuestProgramAssociation createGuestProgramAssociation(GuestProgramAssociation guestProgramAssociation) {
-        String sql = "INSERT INTO ProgramList_Guests (ProgramID) VALUES (?)";
+        String sql = "INSERT INTO ProgramList_Guests (ProgramID, GuestID) VALUES (?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setInt(1, guestProgramAssociation.getProgramID().getProgramID());
+            stmt.setInt(2, guestProgramAssociation.getGuestID().getUserID());
             int rowsInserted = stmt.executeUpdate();
 
             if (rowsInserted > 0) {

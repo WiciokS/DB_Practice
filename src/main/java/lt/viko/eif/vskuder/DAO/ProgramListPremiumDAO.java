@@ -10,9 +10,31 @@ import java.util.List;
 
 public class ProgramListPremiumDAO extends DAO{
     public final String database_name = "ProgramList_Premium";
+
     public static List<PremiumUserProgramAssociation> getPremiumUserProgramAssociations(int userId){
         List<PremiumUserProgramAssociation> associations = new ArrayList<>();
         String sql = "SELECT * FROM ProgramList_Premium WHERE UserID = " + userId;
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                PremiumUserProgramAssociation o = new PremiumUserProgramAssociation();
+                o.setUserID(UserDAO.getUser(rs.getInt("UserID")));
+                o.setProgramID(AIProgramDAO.getAIProgram(rs.getInt("ProgramID")));
+                associations.add(o);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return associations;
+    }
+
+    public static List<PremiumUserProgramAssociation> getPremiumUserProgramAssociations(){
+        List<PremiumUserProgramAssociation> associations = new ArrayList<>();
+        String sql = "SELECT * FROM ProgramList_Premium";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(sql);
