@@ -7,6 +7,8 @@ public class DAO {
 
     protected static String password = "root";
 
+    protected static String database_name = "";
+
     public DAO(String url, String user, String password) {
         this.url = url;
         this.user = user;

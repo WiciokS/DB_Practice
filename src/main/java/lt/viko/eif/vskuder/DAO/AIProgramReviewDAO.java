@@ -11,8 +11,8 @@ import java.util.List;
 public class AIProgramReviewDAO extends DAO{
     public final String database_name = "AIProgramReviews";
     public static AIProgramReview getAIProgramReview(int id){
-        String sql = "Select *" +
-                "from AIProgramReviews" +
+        String sql = "Select * " +
+                "from AIProgramReviews " +
                 "where ReviewID = " + id;
 
         AIProgramReview o = null;

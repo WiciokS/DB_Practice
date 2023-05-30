@@ -10,8 +10,8 @@ import java.sql.*;
 public class AuditTrailDAO extends DAO{
     public final String database_name = "AuditTrail";
     public static AuditTrail getAuditTrail(int id) {
-        String sql = "Select *" +
-                "from AuditTrail" +
+        String sql = "Select * " +
+                "from AuditTrail " +
                 "where AuditID = " + id;
 
         AuditTrail o = null;

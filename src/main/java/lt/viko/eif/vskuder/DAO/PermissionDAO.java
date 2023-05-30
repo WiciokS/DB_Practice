@@ -9,8 +9,8 @@ import java.util.List;
 public class PermissionDAO extends DAO{
     public final String database_name = "Permissions";
     public static Permission getPermission(int id){
-        String sql = "Select *" +
-                "from Permissions" +
+        String sql = "Select * " +
+                "from Permissions " +
                 "where PermissionID = " + id;
 
         Permission o = null;
@@ -35,15 +35,20 @@ public class PermissionDAO extends DAO{
         String sql = "INSERT INTO Permissions (PermissionName) VALUES (?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, permissionName);
 
             int rowsInserted = stmt.executeUpdate();
             if(rowsInserted > 0) {
-                Permission newPermission = new Permission();
-                newPermission.setPermissionName(permissionName);
-                return newPermission;
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        Permission newPermission = new Permission();
+                        newPermission.setPermissionName(permissionName);
+                        newPermission.setPermissionID((int) generatedKeys.getLong(1));
+                        return newPermission;
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

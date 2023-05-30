@@ -1,6 +1,7 @@
 package lt.viko.eif.vskuder.DAO;
 
 import lt.viko.eif.vskuder.models.Description;
+import lt.viko.eif.vskuder.models.Permission;
 import lt.viko.eif.vskuder.models.Policy;
 
 import java.sql.*;
@@ -32,17 +33,22 @@ public class PolicyDAO extends DAO{
         String sql = "INSERT INTO Policies (PolicyName, PolicyDescription) VALUES (?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, policyName);
             stmt.setInt(2, policyDescription.getDescriptionID());
 
             int rowsInserted = stmt.executeUpdate();
             if(rowsInserted > 0) {
-                Policy newPolicy = new Policy();
-                newPolicy.setPolicyName(policyName);
-                newPolicy.setPolicyDescription(policyDescription);
-                return newPolicy;
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        Policy newPolicy = new Policy();
+                        newPolicy.setPolicyName(policyName);
+                        newPolicy.setPolicyDescription(policyDescription);
+                        newPolicy.setPolicyID((int) generatedKeys.getLong(1));
+                        return newPolicy;
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

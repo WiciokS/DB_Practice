@@ -43,4 +43,14 @@ public class AIProgramRating {
     public void setRating(Integer rating) {
         this.rating = rating;
     }
+
+    @Override
+    public String toString() {
+        return "AIProgramRating\n{\n" +
+                "RatingID: " + ratingID + "\n" +
+                "Program: " + programID.toString() + "\n" +
+                "User:" + userID.toString() + "\n" +
+                "Rating: " + rating + "\n" +
+                "}";
+    }
 }

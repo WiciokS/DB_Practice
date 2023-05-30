@@ -7,8 +7,8 @@ import java.sql.*;
 public class GuestDAO extends DAO{
     public final String database_name = "Guests";
     public static Guest getGuest(int id){
-        String sql = "Select *" +
-                "from Guests" +
+        String sql = "Select * " +
+                "from Guests " +
                 "where GuestID = " + id;
 
         Guest o = null;

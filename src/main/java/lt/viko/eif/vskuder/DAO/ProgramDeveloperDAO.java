@@ -7,8 +7,8 @@ import java.sql.*;
 public class ProgramDeveloperDAO extends DAO{
     public final String database_name = "ProgramDevelopers";
     public static ProgramDeveloper getProgramDeveloper(int id) {
-        String sql = "Select *" +
-                "from ProgramDevelopers" +
+        String sql = "Select * " +
+                "from ProgramDevelopers " +
                 "where ProgramID = " + id;
 
         ProgramDeveloper o = null;
@@ -33,7 +33,7 @@ public class ProgramDeveloperDAO extends DAO{
         String sql = "INSERT INTO ProgramDevelopers (ProgramID, DeveloperID) VALUES (?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setInt(1, programDeveloper.getProgramID().getProgramID());
             stmt.setInt(2, programDeveloper.getDeveloperID().getDeveloperID());

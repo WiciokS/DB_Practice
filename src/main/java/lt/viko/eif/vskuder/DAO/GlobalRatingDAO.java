@@ -1,6 +1,7 @@
 package lt.viko.eif.vskuder.DAO;
 
 import lt.viko.eif.vskuder.models.AIProgram;
+import lt.viko.eif.vskuder.models.Developer;
 import lt.viko.eif.vskuder.models.GlobalRating;
 
 import java.sql.*;
@@ -10,8 +11,8 @@ import java.util.List;
 public class GlobalRatingDAO extends DAO{
     public final String database_name = "GlobalRatings";
     public static GlobalRating getGlobalRating(int id){
-        String sql = "Select *" +
-                "from GlobalRatings" +
+        String sql = "Select * " +
+                "from GlobalRatings " +
                 "where ProgramID = " + id;
 
         GlobalRating o = null;
@@ -36,17 +37,23 @@ public class GlobalRatingDAO extends DAO{
         String sql = "INSERT INTO GlobalRatings (ProgramID, Rating) VALUES (?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setInt(1, program.getProgramID());
             stmt.setFloat(2, rating);
 
             int rowsInserted = stmt.executeUpdate();
             if(rowsInserted > 0) {
-                GlobalRating newGlobalRating = new GlobalRating();
-                newGlobalRating.setProgramID(program);
-                newGlobalRating.setRating(rating);
-                return newGlobalRating;
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        GlobalRating globalRating = new GlobalRating();
+                        globalRating.setProgramID(program);
+                        globalRating.setRating(rating);
+                        return globalRating;
+                    } else {
+                        throw new SQLException("Creating AIProgramType failed, no ID obtained.");
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -31,4 +31,14 @@ public class User extends GeneralUser{
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
     }
+
+    @Override
+    public String toString() {
+        return "User\n{\n" +
+                "UserID: " + userID + "\n" +
+                "userName: " + userName + "\n" +
+                "userPassword: " + userPassword + "\n" +
+                "userEMail: " + userEmail + "\n" +
+                "}";
+    }
 }

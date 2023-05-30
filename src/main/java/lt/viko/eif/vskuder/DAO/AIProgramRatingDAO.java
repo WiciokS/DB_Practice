@@ -9,9 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AIProgramRatingDAO extends DAO{
+    public String database_name = "AIProgramRatings";
     public static AIProgramRating getAIProgramRating(int id){
-        String sql = "Select *" +
-                "from AIProgramRatings" +
+        String sql = "Select * " +
+                "from AIProgramRatings " +
                 "where RatingID = " + id;
 
         AIProgramRating o = null;;

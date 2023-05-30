@@ -9,9 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AIProgramDAO extends DAO{
+    public final String database_name = "AIPrograms";
+
     public static AIProgram getAIProgram(int id){
-        String sql = "Select *" +
-                "from AIPrograms" +
+        String sql = "Select * " +
+                "from AIPrograms " +
                 "where ProgramID = " + id;
 
         AIProgram o = null;
@@ -38,7 +40,7 @@ public class AIProgramDAO extends DAO{
         String sql = "INSERT INTO AIPrograms (ProgramName, ProgramType, Description) VALUES (?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, programName);
             stmt.setInt(2, programType.getTypeID());
@@ -47,11 +49,18 @@ public class AIProgramDAO extends DAO{
             int rowsInserted = stmt.executeUpdate();
 
             if (rowsInserted > 0) {
-                AIProgram newProgram = new AIProgram();
-                newProgram.setProgramName(programName);
-                newProgram.setProgramType(programType);
-                newProgram.setDescription(description);
-                return newProgram;
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        AIProgram newProgram = new AIProgram();
+                        newProgram.setProgramID((int) generatedKeys.getLong(1));
+                        newProgram.setProgramName(programName);
+                        newProgram.setProgramType(programType);
+                        newProgram.setDescription(description);
+                        return newProgram;
+                    } else {
+                        throw new SQLException("Creating AIProgramType failed, no ID obtained.");
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

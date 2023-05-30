@@ -1,5 +1,6 @@
 package lt.viko.eif.vskuder.DAO;
 
+import lt.viko.eif.vskuder.models.Description;
 import lt.viko.eif.vskuder.models.Developer;
 
 import java.sql.*;
@@ -9,8 +10,8 @@ import java.util.List;
 public class DeveloperDAO extends DAO{
     public final String database_name = "Developers";
     public static Developer getDeveloper(int id){
-        String sql = "Select *" +
-                "from Developers" +
+        String sql = "Select * " +
+                "from Developers " +
                 "where DeveloperID = " + id;
 
         Developer o = null;
@@ -36,7 +37,7 @@ public class DeveloperDAO extends DAO{
         String sql = "INSERT INTO Developers (DeveloperName, DeveloperEmail) VALUES (?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, developerName);
             stmt.setString(2, developerEmail);
@@ -44,10 +45,17 @@ public class DeveloperDAO extends DAO{
             int rowsInserted = stmt.executeUpdate();
 
             if (rowsInserted > 0) {
-                Developer newDeveloper = new Developer();
-                newDeveloper.setDeveloperName(developerName);
-                newDeveloper.setDeveloperEmail(developerEmail);
-                return newDeveloper;
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        Developer newDeveloper = new Developer();
+                        newDeveloper.setDeveloperName(developerName);
+                        newDeveloper.setDeveloperEmail(developerEmail);
+                        newDeveloper.setDeveloperID((int) generatedKeys.getLong(1));
+                        return newDeveloper;
+                    } else {
+                        throw new SQLException("Creating AIProgramType failed, no ID obtained.");
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

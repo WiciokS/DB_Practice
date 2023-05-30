@@ -10,8 +10,8 @@ public class UserDAO extends DAO{
 
     public final String database_name = "Users";
     public static User getUser(int userID) {
-        String sql = "Select *" +
-                "from Users" +
+        String sql = "Select * " +
+                "from Users " +
                 "where UserID = " + userID;
 
         User o = null;

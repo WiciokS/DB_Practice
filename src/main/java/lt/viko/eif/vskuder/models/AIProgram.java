@@ -39,4 +39,14 @@ public class AIProgram {
     public void setDescription(Description description) {
         this.description = description;
     }
+
+    @Override
+    public String toString(){
+        return "AIProgram\n{\n" +
+                "ProgramID: " + programID + "\n" +
+                "ProgramName: " + programName + "\n" +
+                "ProgramType: " + programType.toString() + "\n" +
+                "Description: " + description.toString() + "\n" +
+                "}";
+    }
 }

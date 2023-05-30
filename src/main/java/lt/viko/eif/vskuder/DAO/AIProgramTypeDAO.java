@@ -9,8 +9,8 @@ import java.util.List;
 public class AIProgramTypeDAO extends DAO{
     public final String database_name = "AIProgramTypes";
     public static AIProgramType getAIProgramType(int id) {
-        String sql = "Select *" +
-                "from AIProgramTypes" +
+        String sql = "Select * " +
+                "from AIProgramTypes " +
                 "where TypeID = " + id;
 
         AIProgramType o = null;
@@ -31,26 +31,38 @@ public class AIProgramTypeDAO extends DAO{
         }
     }
 
-    public static AIProgramType createAIProgramType(String typeName){
+    public static AIProgramType createAIProgramType(String typeName) {
         String sql = "INSERT INTO AIProgramTypes (TypeName) VALUES (?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, typeName);
 
-            int rowsInserted = stmt.executeUpdate();
+            int affectedRows = stmt.executeUpdate();
 
-            if (rowsInserted > 0) {
-                AIProgramType newType = new AIProgramType();
-                newType.setTypeName(typeName);
-                return newType;
+            if (affectedRows == 0) {
+                throw new SQLException("Creating AI program type failed, no rows affected.");
             }
+
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    AIProgramType newType = new AIProgramType();
+                    newType.setTypeID(generatedKeys.getInt(1));
+                    newType.setTypeName(typeName);
+                    return newType;
+                } else {
+                    throw new SQLException("Creating AI program type failed, no ID obtained.");
+                }
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
+
+
 
     public static boolean deleteAIProgramType(int id) {
         String sql = "DELETE FROM AIProgramTypes WHERE TypeID = ?";
