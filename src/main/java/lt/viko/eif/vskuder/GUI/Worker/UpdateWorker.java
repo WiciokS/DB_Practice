@@ -56,6 +56,7 @@ public class UpdateWorker {
                     newAIProgram.setDescription(DescriptionDAO.getDescription(Integer.parseInt(description.getText())));
                 }
             }
+            AIProgramDAO.updateAIProgram(newAIProgram);
             return updated;
         } else {
             return false;
@@ -82,6 +83,7 @@ public class UpdateWorker {
                 newAIProgramType.setTypeName(name.getText());
                 updated = true;
             }
+            AIProgramTypeDAO.updateAIProgramType(newAIProgramType);
             return updated;
         } else {
             return false;
@@ -108,6 +110,7 @@ public class UpdateWorker {
                 newDescription.setDescriptionText(description.getText());
                 updated = true;
             }
+            DescriptionDAO.updateDescription(newDescription);
             return updated;
         } else {
             return false;
