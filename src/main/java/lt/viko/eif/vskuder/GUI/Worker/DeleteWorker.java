@@ -2,6 +2,7 @@ package lt.viko.eif.vskuder.GUI.Worker;
 
 import lt.viko.eif.vskuder.DAO.AIProgramDAO;
 import lt.viko.eif.vskuder.DAO.AIProgramTypeDAO;
+import lt.viko.eif.vskuder.DAO.DescriptionDAO;
 import lt.viko.eif.vskuder.models.AIProgramType;
 
 import javax.swing.*;
@@ -58,7 +59,7 @@ public class DeleteWorker {
 
         int result = JOptionPane.showConfirmDialog(null, checkBox, "Delete Description", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
-            return AIProgramTypeDAO.deleteAIProgramType(id);
+            return DescriptionDAO.deleteDescription(id);
         } else {
             return false;
         }

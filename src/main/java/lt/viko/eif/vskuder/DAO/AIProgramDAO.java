@@ -86,7 +86,7 @@ public class AIProgramDAO extends DAO{
     }
 
     public static boolean updateAIProgram(AIProgram program) {
-        String sql = "UPDATE AIPrograms SET ProgramName = ?, TypeID = ?, DescriptionID = ? WHERE ProgramID = ?";
+        String sql = "UPDATE AIPrograms SET ProgramName = ?, ProgramType = ?, Description = ? WHERE ProgramID = ?";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -118,11 +118,11 @@ public class AIProgramDAO extends DAO{
                 program.setProgramID(rs.getInt("ProgramID"));
                 program.setProgramName(rs.getString("ProgramName"));
 
-                int typeId = rs.getInt("TypeID");
+                int typeId = rs.getInt("ProgramType");
                 AIProgramType type = AIProgramTypeDAO.getAIProgramType(typeId);
                 program.setProgramType(type);
 
-                int descriptionId = rs.getInt("DescriptionID");
+                int descriptionId = rs.getInt("Description");
                 Description description = DescriptionDAO.getDescription(descriptionId);
                 program.setDescription(description);
 
