@@ -34,7 +34,7 @@ public class AuditTrailDAO extends DAO{
     }
 
     public static AuditTrail createAuditTrail(AuditTrail auditTrail) {
-        String sql = "INSERT INTO AuditTrail (RegisteredID, GuestID, Action, Timestamp) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO AuditTrail (UserID, Action, Timestamp) VALUES (?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -71,14 +71,12 @@ public class AuditTrailDAO extends DAO{
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, auditTrail.getRegisteredID().getUserID());
-            stmt.setInt(2, auditTrail.getGuestID().getUserID());
-            stmt.setString(3, auditTrail.getAction());
-            stmt.setString(4, auditTrail.getTimestamp());
-            stmt.setInt(5, auditTrail.getAuditID());
-
-            int rowsUpdated = stmt.executeUpdate();
-            return rowsUpdated > 0;
+             stmt.setInt(1, auditTrail.getRegisteredID().getUserID());
+             stmt.setString(2, auditTrail.getAction());
+             stmt.setString(3, auditTrail.getTimestamp());
+             stmt.setInt(4, auditTrail.getAuditID());
+             int rowsUpdated = stmt.executeUpdate();
+             return rowsUpdated > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
