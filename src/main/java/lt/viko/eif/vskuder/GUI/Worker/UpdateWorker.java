@@ -29,6 +29,7 @@ public class UpdateWorker {
         if (result == JOptionPane.OK_OPTION) {
             AIProgram check = AIProgramDAO.getAIProgram(id);
             AIProgram newAIProgram = new AIProgram();
+            newAIProgram.setProgramID(id);
             boolean updated = false;
             if (name.getText().equals("")) {
                 newAIProgram.setProgramName(check.getProgramName());
