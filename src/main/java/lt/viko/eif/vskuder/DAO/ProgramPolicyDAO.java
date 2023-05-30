@@ -1,13 +1,17 @@
 package lt.viko.eif.vskuder.DAO;
 
 import lt.viko.eif.vskuder.models.ProgramPolicy;
+import lt.viko.eif.vskuder.models.AIProgram;
+import lt.viko.eif.vskuder.models.Policy;
 
 import java.sql.*;
 
 public class ProgramPolicyDAO extends DAO{
+
+    public final String database_name = "ProgramPolicies";
     public static ProgramPolicy getProgramPolicy(int id) {
-        String sql = "Select *" +
-                "from ProgramPolicies" +
+        String sql = "Select * " +
+                "from ProgramPolicies " +
                 "where ProgramID = " + id;
 
         ProgramPolicy o = null;
@@ -28,30 +32,31 @@ public class ProgramPolicyDAO extends DAO{
         }
     }
 
-    public static ProgramPolicy createProgramPolicy(ProgramPolicy programPolicy) {
-        String sql = "INSERT INTO ProgramPolicy (ProgramID, PolicyID) VALUES (?, ?)";
+    public static ProgramPolicy createProgramPolicy(AIProgram aiProgram, Policy policy) {
+        String sql = "INSERT INTO ProgramPolicies (ProgramID, PolicyID) VALUES (?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setInt(1, programPolicy.getProgramID().getProgramID());
-            stmt.setInt(2, programPolicy.getPolicyID().getPolicyID());
+            stmt.setInt(1, aiProgram.getProgramID());
+            stmt.setInt(2, policy.getPolicyID());
+            int rowsInserted = stmt.executeUpdate();
 
-            int affectedRows = stmt.executeUpdate();
-
-            if (affectedRows == 0) {
-                throw new SQLException("Creating programPolicy failed, no rows affected.");
+            if (rowsInserted > 0) {
+                ProgramPolicy newProgramPolicy = new ProgramPolicy();
+                newProgramPolicy.setProgramID(aiProgram);
+                newProgramPolicy.setPolicyID(policy);
+                return newProgramPolicy;
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return programPolicy;
+        return null;
     }
 
+
     public static boolean deleteProgramPolicy(int programID, int policyID) {
-        String sql = "DELETE FROM ProgramPolicy WHERE ProgramID = ? AND PolicyID = ?";
+        String sql = "DELETE FROM ProgramPolicies WHERE ProgramID = ? AND PolicyID = ?";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(sql)) {

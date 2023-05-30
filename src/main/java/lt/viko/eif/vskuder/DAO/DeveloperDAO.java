@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DeveloperDAO extends DAO{
+    public final String database_name = "Developers";
     public static Developer getDeveloper(int id){
         String sql = "Select *" +
                 "from Developers" +

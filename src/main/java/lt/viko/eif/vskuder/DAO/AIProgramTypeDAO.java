@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AIProgramTypeDAO extends DAO{
+    public final String database_name = "AIProgramTypes";
     public static AIProgramType getAIProgramType(int id) {
         String sql = "Select *" +
                 "from AIProgramTypes" +

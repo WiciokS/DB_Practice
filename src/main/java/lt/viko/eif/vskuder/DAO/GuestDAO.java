@@ -5,6 +5,7 @@ import lt.viko.eif.vskuder.models.Guest;
 import java.sql.*;
 
 public class GuestDAO extends DAO{
+    public final String database_name = "Guests";
     public static Guest getGuest(int id){
         String sql = "Select *" +
                 "from Guests" +
@@ -28,7 +29,7 @@ public class GuestDAO extends DAO{
     }
 
     public static Guest createGuest(Guest guest) {
-        String sql = "INSERT INTO Guest (GuestID) VALUES (NULL)";
+        String sql = "INSERT INTO Guests (GuestID) VALUES (NULL)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -56,7 +57,7 @@ public class GuestDAO extends DAO{
     }
 
     public static boolean deleteGuest(int guestID) {
-        String sql = "DELETE FROM Guest WHERE GuestID = ?";
+        String sql = "DELETE FROM Guests WHERE GuestID = ?";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(sql)) {

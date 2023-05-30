@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PermissionDAO extends DAO{
+    public final String database_name = "Permissions";
     public static Permission getPermission(int id){
         String sql = "Select *" +
                 "from Permissions" +

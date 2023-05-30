@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO extends DAO{
+
+    public final String database_name = "Users";
     public static User getUser(int userID) {
         String sql = "Select *" +
                 "from Users" +
@@ -32,29 +34,37 @@ public class UserDAO extends DAO{
         }
     }
 
-    public static User createUser(String userName, String userEmail, String userPassword){
+    public static User createUser(String userName, String userEmail, String userPassword) {
         String sql = "INSERT INTO Users (UserName, UserEmail, UserPassword) VALUES (?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, userName);
             stmt.setString(2, userEmail);
             stmt.setString(3, userPassword);
-
             int rowsInserted = stmt.executeUpdate();
-            if(rowsInserted > 0) {
-                User newUser = new User();
-                newUser.setUserName(userName);
-                newUser.setUserEmail(userEmail);
-                newUser.setUserPassword(userPassword);
-                return newUser;
+
+            if (rowsInserted > 0) {
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        User newUser = new User();
+                        newUser.setUserName(userName);
+                        newUser.setUserEmail(userEmail);
+                        newUser.setUserPassword(userPassword);
+                        newUser.setUserID(generatedKeys.getInt(1));
+                        return newUser;
+                    } else {
+                        throw new SQLException("Creating user failed, no ID obtained.");
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
+
 
     public static boolean deleteUser(int userId) {
         String sql = "DELETE FROM Users WHERE UserID = ?";

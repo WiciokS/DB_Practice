@@ -35,7 +35,7 @@ public class AIProgramDAO extends DAO{
     }
 
     public static AIProgram createAIProgram(String programName, AIProgramType programType, Description description){
-        String sql = "INSERT INTO AIPrograms (ProgramName, TypeID, DescriptionID) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO AIPrograms (ProgramName, ProgramType, Description) VALUES (?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(sql)) {

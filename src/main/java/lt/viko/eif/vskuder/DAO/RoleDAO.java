@@ -7,19 +7,28 @@ import java.util.ArrayList;
 import java.util.List;
 public class RoleDAO extends DAO{
 
-    public static Role createRole(String roleName){
+    public final String database_name = "Roles";
+
+    public static Role createRole(String roleName) {
         String sql = "INSERT INTO Roles (RoleName) VALUES (?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, roleName);
             int rowsInserted = stmt.executeUpdate();
 
             if (rowsInserted > 0) {
-                Role newRole = new Role();
-                newRole.setRoleName(roleName);
-                return newRole;
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        Role newRole = new Role();
+                        newRole.setRoleName(roleName);
+                        newRole.setRoleID(generatedKeys.getInt(1));
+                        return newRole;
+                    } else {
+                        throw new SQLException("Creating Role failed, no ID obtained.");
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

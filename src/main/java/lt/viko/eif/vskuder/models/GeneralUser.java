@@ -20,4 +20,12 @@ public class GeneralUser {
     public boolean setIsGuest(boolean isGuest){
         return this.isGuest = isGuest;
     }
+
+    @Override
+    public String toString() {
+        return "GeneralUser\n{\n" +
+                "userID=" + userID +
+                ", isGuest=" + isGuest +
+                '}';
+    }
 }

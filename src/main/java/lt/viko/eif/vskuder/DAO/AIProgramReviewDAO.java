@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AIProgramReviewDAO extends DAO{
+    public final String database_name = "AIProgramReviews";
     public static AIProgramReview getAIProgramReview(int id){
         String sql = "Select *" +
                 "from AIProgramReviews" +
@@ -17,7 +18,7 @@ public class AIProgramReviewDAO extends DAO{
         AIProgramReview o = null;
 
         try (Connection conn = DriverManager.getConnection(url, user, password)){
-            PreparedStatement stmt = conn.prepareStatement(sql);
+            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -35,7 +36,7 @@ public class AIProgramReviewDAO extends DAO{
     }
 
     public static AIProgramReview createAIProgramReview(AIProgramReview aiProgramReview) {
-        String sql = "INSERT INTO AIProgramReview (ProgramID, UserID, Review) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO AIProgramReviews (ProgramID, UserID, Review) VALUES (?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -69,7 +70,7 @@ public class AIProgramReviewDAO extends DAO{
 
     public static List<AIProgramReview> getAllAIProgramReviews() {
         List<AIProgramReview> aiProgramReviews = new ArrayList<>();
-        String sql = "SELECT * FROM AIProgramReview";
+        String sql = "SELECT * FROM AIProgramReviews";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              Statement stmt = conn.createStatement();
@@ -99,7 +100,7 @@ public class AIProgramReviewDAO extends DAO{
     }
 
     public static boolean updateAIProgramReview(AIProgramReview aiProgramReview) {
-        String sql = "UPDATE AIProgramReview SET ProgramID = ?, UserID = ?, Review = ? WHERE ReviewID = ?";
+        String sql = "UPDATE AIProgramReviews SET ProgramID = ?, UserID = ?, Review = ? WHERE ReviewID = ?";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -119,7 +120,7 @@ public class AIProgramReviewDAO extends DAO{
     }
 
     public static boolean deleteAIProgramReview(int reviewID) {
-        String sql = "DELETE FROM AIProgramReview WHERE ReviewID = ?";
+        String sql = "DELETE FROM AIProgramReviews WHERE ReviewID = ?";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(sql)) {

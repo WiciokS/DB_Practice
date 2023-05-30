@@ -48,4 +48,15 @@ public class AuditTrail {
     public void setGuestID(Guest guestID) {
         this.guestID = guestID;
     }
+
+    @Override
+    public String toString() {
+        return "AuditTrail\n{\n" +
+                "auditID: " + auditID + "\n" +
+                "registeredID: " + registeredID + "\n" +
+                "guestID: " + guestID + "\n" +
+                "action: " + action + "\n" +
+                "timestamp: " + timestamp + "\n" +
+                '}';
+    }
 }

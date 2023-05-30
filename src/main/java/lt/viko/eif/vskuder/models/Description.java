@@ -26,5 +26,11 @@ public class Description {
         this.descriptionText = descriptionText;
     }
 
-
+    @Override
+    public String toString() {
+        return "Description\n{\n" +
+                "descriptionID: " + descriptionID + "\n" +
+                "descriptionText: " + descriptionText + '\n' +
+                '}';
+    }
 }

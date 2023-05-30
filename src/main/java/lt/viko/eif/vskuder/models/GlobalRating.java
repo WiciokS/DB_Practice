@@ -21,4 +21,12 @@ public class GlobalRating {
     public void setRating(Float rating) {
         this.rating = rating;
     }
+
+    @Override
+    public String toString() {
+        return "GlobalRating\n{\n" +
+                "programID: " + programID + "\n" +
+                "rating: " + rating + "\n" +
+                '}';
+    }
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProgramListGuestDAO extends DAO{
+    public final String database_name = "ProgramList_Guests";
     public static List<GuestProgramAssociation> getGuestProgramAssociations(){
         List<GuestProgramAssociation> associations = new ArrayList<>();
         String sql = "SELECT * FROM ProgramList_Guests";
@@ -31,23 +32,20 @@ public class ProgramListGuestDAO extends DAO{
         String sql = "INSERT INTO ProgramList_Guests (ProgramID) VALUES (?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setInt(1, guestProgramAssociation.getProgramID().getProgramID());
+            int rowsInserted = stmt.executeUpdate();
 
-            int affectedRows = stmt.executeUpdate();
-
-            if (affectedRows == 0) {
-                throw new SQLException("Creating guest program association failed, no rows affected.");
+            if (rowsInserted > 0) {
+                return guestProgramAssociation;
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
-
-        return guestProgramAssociation;
+        return null;
     }
+
 
     public static boolean deleteGuestProgramAssociation(int programID) {
         String sql = "DELETE FROM ProgramList_Guests WHERE ProgramID = ?";

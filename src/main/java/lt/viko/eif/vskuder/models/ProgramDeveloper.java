@@ -24,4 +24,12 @@ public class ProgramDeveloper {
     public void setDeveloperID(Developer developerID) {
         this.developerID = developerID;
     }
+
+    @Override
+    public String toString() {
+        return "ProgramDeveloper\n{\n" +
+                "programID: " + programID + "\n" +
+                "developerID: " + developerID + "\n" +
+                '}';
+    }
 }

@@ -21,4 +21,12 @@ public class AIProgramType {
     public void setTypeName(String typeName) {
         this.typeName = typeName;
     }
+
+    @Override
+    public String toString() {
+        return "AIProgramType\n{\n" +
+                "typeID:" + typeID + '\n' +
+                "typeName: " + typeName + '\n' +
+                '}';
+    }
 }

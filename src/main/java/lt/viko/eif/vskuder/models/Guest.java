@@ -5,5 +5,10 @@ public class Guest extends GeneralUser{
 
     public Guest(){}
 
-
+    @Override
+    public String toString() {
+        return "Guest\n{\n" +
+                "guestID=" + userID + "\n" +
+                '}';
+    }
 }

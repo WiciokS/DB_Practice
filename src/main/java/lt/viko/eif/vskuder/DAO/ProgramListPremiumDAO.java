@@ -1,12 +1,15 @@
 package lt.viko.eif.vskuder.DAO;
 
+import lt.viko.eif.vskuder.models.AIProgram;
 import lt.viko.eif.vskuder.models.PremiumUserProgramAssociation;
+import lt.viko.eif.vskuder.models.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProgramListPremiumDAO extends DAO{
+    public final String database_name = "ProgramList_Premium";
     public static List<PremiumUserProgramAssociation> getPremiumUserProgramAssociations(int userId){
         List<PremiumUserProgramAssociation> associations = new ArrayList<>();
         String sql = "SELECT * FROM ProgramList_Premium WHERE UserID = " + userId;
@@ -28,28 +31,28 @@ public class ProgramListPremiumDAO extends DAO{
         return associations;
     }
 
-    public static PremiumUserProgramAssociation createPremiumUserProgramAssociation(PremiumUserProgramAssociation premiumUserProgramAssociation) {
+    public static PremiumUserProgramAssociation createPremiumUserProgramAssociation(User user, AIProgram aiProgram) {
         String sql = "INSERT INTO ProgramList_Premium (UserID, ProgramID) VALUES (?, ?)";
 
-        try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DriverManager.getConnection(url, DAO.user, password);
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setInt(1, premiumUserProgramAssociation.getUserID().getUserID());
-            stmt.setInt(2, premiumUserProgramAssociation.getProgramID().getProgramID());
+            stmt.setInt(1, user.getUserID());
+            stmt.setInt(2, aiProgram.getProgramID());
+            int rowsInserted = stmt.executeUpdate();
 
-            int affectedRows = stmt.executeUpdate();
-
-            if (affectedRows == 0) {
-                throw new SQLException("Creating premium user program association failed, no rows affected.");
+            if (rowsInserted > 0) {
+                PremiumUserProgramAssociation newUserProgram = new PremiumUserProgramAssociation();
+                newUserProgram.setUserID(user);
+                newUserProgram.setProgramID(aiProgram);
+                return newUserProgram;
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
-
-        return premiumUserProgramAssociation;
+        return null;
     }
+
 
     public static boolean updatePremiumUserProgramAssociation(PremiumUserProgramAssociation premiumUserProgramAssociation) {
         String sql = "UPDATE ProgramList_Premium SET UserID = ?, ProgramID = ? WHERE UserID = ? AND ProgramID = ?";

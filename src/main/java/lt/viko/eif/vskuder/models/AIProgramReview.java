@@ -42,4 +42,14 @@ public class AIProgramReview {
     public void setReview(String review) {
         this.review = review;
     }
+
+    @Override
+    public String toString() {
+        return "AIProgramReview\n{\n" +
+                "reviewID: " + reviewID + "\n" +
+                "programID: " + programID + "\n" +
+                "userID: " + userID + "\n" +
+                "review: " + review + "\n" +
+                '}';
+    }
 }

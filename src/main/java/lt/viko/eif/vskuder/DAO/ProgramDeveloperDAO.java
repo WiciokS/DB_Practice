@@ -5,6 +5,7 @@ import lt.viko.eif.vskuder.models.ProgramDeveloper;
 import java.sql.*;
 
 public class ProgramDeveloperDAO extends DAO{
+    public final String database_name = "ProgramDevelopers";
     public static ProgramDeveloper getProgramDeveloper(int id) {
         String sql = "Select *" +
                 "from ProgramDevelopers" +
@@ -29,7 +30,7 @@ public class ProgramDeveloperDAO extends DAO{
     }
 
     public static ProgramDeveloper createProgramDeveloper(ProgramDeveloper programDeveloper) {
-        String sql = "INSERT INTO ProgramDeveloper (ProgramID, DeveloperID) VALUES (?, ?)";
+        String sql = "INSERT INTO ProgramDevelopers (ProgramID, DeveloperID) VALUES (?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -52,7 +53,7 @@ public class ProgramDeveloperDAO extends DAO{
     }
 
     public static boolean deleteProgramDeveloper(int programID, int developerID) {
-        String sql = "DELETE FROM ProgramDeveloper WHERE ProgramID = ? AND DeveloperID = ?";
+        String sql = "DELETE FROM ProgramDevelopers WHERE ProgramID = ? AND DeveloperID = ?";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(sql)) {

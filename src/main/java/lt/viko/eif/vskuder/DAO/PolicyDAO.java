@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PolicyDAO extends DAO{
+    public final String database_name = "Policies";
     public static Policy getPolicy(int policyID) {
-        String sql = "SELECT * FROM policy WHERE policyID = " + policyID;
+        String sql = "SELECT * FROM policies WHERE policyID = " + policyID;
         Policy policy = new Policy();
 
         try (Connection conn = DriverManager.getConnection(url, user, password)) {

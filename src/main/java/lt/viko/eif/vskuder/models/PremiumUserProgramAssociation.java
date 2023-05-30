@@ -20,4 +20,12 @@ public class PremiumUserProgramAssociation {
     public void setProgramID(AIProgram programID) {
         this.programID = programID;
     }
+
+    @Override
+    public String toString() {
+        return "PremiumUserProgramAssociation\n{\n" +
+                "userID: " + userID + "\n" +
+                "programID: " + programID + "\n" +
+                '}';
+    }
 }

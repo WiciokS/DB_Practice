@@ -21,5 +21,11 @@ public class ProgramPolicy {
         this.policyID = policyID;
     }
 
-
+    @Override
+    public String toString() {
+        return "ProgramPolicy\n{\n" +
+                "programID: " + programID + "\n" +
+                "policyID: " + policyID + "\n" +
+                '}';
+    }
 }

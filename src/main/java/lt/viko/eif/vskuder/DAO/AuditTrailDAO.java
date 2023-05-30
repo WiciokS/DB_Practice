@@ -8,6 +8,7 @@ import lt.viko.eif.vskuder.models.User;
 import java.sql.*;
 
 public class AuditTrailDAO extends DAO{
+    public final String database_name = "AuditTrail";
     public static AuditTrail getAuditTrail(int id) {
         String sql = "Select *" +
                 "from AuditTrail" +
@@ -16,7 +17,7 @@ public class AuditTrailDAO extends DAO{
         AuditTrail o = null;
 
         try (Connection conn = DriverManager.getConnection(url, user, password)){
-            PreparedStatement stmt = conn.prepareStatement(sql);
+            PreparedStatement stmt = conn.prepareStatement(sql , Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {

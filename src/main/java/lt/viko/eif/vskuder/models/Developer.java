@@ -30,4 +30,13 @@ public class Developer {
     public void setDeveloperEmail(String developerEmail) {
         this.developerEmail = developerEmail;
     }
+
+    @Override
+    public String toString() {
+        return "Developer\n{\n" +
+                "developerID: " + developerID + "\n" +
+                "developerName: " + developerName + "\n" +
+                "developerEmail: " + developerEmail + "\n" +
+                '}';
+    }
 }

@@ -17,7 +17,7 @@ public class AIProgramRatingDAO extends DAO{
         AIProgramRating o = null;;
 
         try (Connection conn = DriverManager.getConnection(url, user, password)){
-            PreparedStatement stmt = conn.prepareStatement(sql);
+            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -36,7 +36,7 @@ public class AIProgramRatingDAO extends DAO{
     }
 
     public static AIProgramRating createAIProgramRating(AIProgramRating aiProgramRating) {
-        String sql = "INSERT INTO AIProgramRating (ProgramID, UserID, Rating) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO AIProgramRatings (ProgramID, UserID, Rating) VALUES (?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -70,7 +70,7 @@ public class AIProgramRatingDAO extends DAO{
 
     public static List<AIProgramRating> getAllAIProgramRatings() {
         List<AIProgramRating> aiProgramRatings = new ArrayList<>();
-        String sql = "SELECT * FROM AIProgramRating";
+        String sql = "SELECT * FROM AIProgramRatings";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              Statement stmt = conn.createStatement();
@@ -100,7 +100,7 @@ public class AIProgramRatingDAO extends DAO{
     }
 
     public static boolean updateAIProgramRating(AIProgramRating aiProgramRating) {
-        String sql = "UPDATE AIProgramRating SET ProgramID = ?, UserID = ?, Rating = ? WHERE RatingID = ?";
+        String sql = "UPDATE AIProgramRatings SET ProgramID = ?, UserID = ?, Rating = ? WHERE RatingID = ?";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -120,7 +120,7 @@ public class AIProgramRatingDAO extends DAO{
     }
 
     public static boolean deleteAIProgramRating(int ratingID) {
-        String sql = "DELETE FROM AIProgramRating WHERE RatingID = ?";
+        String sql = "DELETE FROM AIProgramRatings WHERE RatingID = ?";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(sql)) {

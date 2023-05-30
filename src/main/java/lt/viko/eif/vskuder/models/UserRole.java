@@ -22,4 +22,12 @@ public class UserRole {
     public void setRoleID(Role roleID) {
         this.roleID = roleID;
     }
+
+    @Override
+    public String toString() {
+        return "UserRole\n{\n" +
+                "userID: " + userID + "\n" +
+                "roleID: " + roleID + "\n" +
+                '}';
+    }
 }

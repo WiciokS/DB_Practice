@@ -31,4 +31,13 @@ public class Policy {
     public void setPolicyDescription(Description policyDescription) {
         this.policyDescription = policyDescription;
     }
+
+    @Override
+    public String toString() {
+        return "Policy\n{\n" +
+                "policyID: " + policyID + "\n" +
+                "policyName: " + policyName + "\n" +
+                "policyDescription: " + policyDescription + "\n" +
+                '}';
+    }
 }

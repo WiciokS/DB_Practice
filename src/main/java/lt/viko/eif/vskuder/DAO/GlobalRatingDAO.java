@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GlobalRatingDAO extends DAO{
+    public final String database_name = "GlobalRatings";
     public static GlobalRating getGlobalRating(int id){
         String sql = "Select *" +
                 "from GlobalRatings" +

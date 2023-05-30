@@ -20,4 +20,12 @@ public class RegisteredUserProgramAssociation {
     public void setProgramID(AIProgram programID) {
         this.programID = programID;
     }
+
+    @Override
+    public String toString() {
+        return "RegisteredUserProgramAssociation\n{\n" +
+                "UserID: " + UserID + "\n" +
+                "programID: " + programID + "\n" +
+                '}';
+    }
 }

@@ -9,9 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RolePermissionDAO extends DAO{
+
+    public final String database_name = "RolePermissions";
     public static RolePermission getRolePermission(int id){
-        String sql = "Select *" +
-                "from RolePermissions" +
+        String sql = "Select * " +
+                "from RolePermissions " +
                 "where RoleID = " + id;
 
         RolePermission o = null;
@@ -32,17 +34,17 @@ public class RolePermissionDAO extends DAO{
         }
     }
 
-    public static RolePermission createRolePermission(Role role, Permission permission){
+    public static RolePermission createRolePermission(Role role, Permission permission) {
         String sql = "INSERT INTO RolePermissions (RoleID, PermissionID) VALUES (?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setInt(1, role.getRoleID());
             stmt.setInt(2, permission.getPermissionID());
-
             int rowsInserted = stmt.executeUpdate();
-            if(rowsInserted > 0) {
+
+            if (rowsInserted > 0) {
                 RolePermission newRolePermission = new RolePermission();
                 newRolePermission.setRoleID(role);
                 newRolePermission.setPermissionID(permission);
@@ -53,6 +55,7 @@ public class RolePermissionDAO extends DAO{
         }
         return null;
     }
+
 
     public static boolean deleteRolePermission(int roleId, int permissionId) {
         String sql = "DELETE FROM RolePermissions WHERE RoleID = ? AND PermissionID = ?";

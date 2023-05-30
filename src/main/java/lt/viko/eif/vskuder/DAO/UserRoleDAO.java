@@ -9,9 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRoleDAO extends DAO{
+
+    public final String database_name = "UserRoles";
     public static UserRole getUserRole(int id){
-        String sql = "Select *" +
-                "from UserRoles" +
+        String sql = "Select * " +
+                "from UserRoles " +
                 "where UserID = " + id;
 
         UserRole o = null;
@@ -32,17 +34,17 @@ public class UserRoleDAO extends DAO{
         }
     }
 
-    public static UserRole createUserRole(User user, Role role){
+    public static UserRole createUserRole(User user, Role role) {
         String sql = "INSERT INTO UserRoles (UserID, RoleID) VALUES (?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url, DAO.user, password);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setInt(1, user.getUserID());
             stmt.setInt(2, role.getRoleID());
-
             int rowsInserted = stmt.executeUpdate();
-            if(rowsInserted > 0) {
+
+            if (rowsInserted > 0) {
                 UserRole newUserRole = new UserRole();
                 newUserRole.setUserID(user);
                 newUserRole.setRoleID(role);
@@ -53,6 +55,7 @@ public class UserRoleDAO extends DAO{
         }
         return null;
     }
+
 
     public static boolean deleteUserRole(int userId) {
         String sql = "DELETE FROM UserRoles WHERE UserID = ?";

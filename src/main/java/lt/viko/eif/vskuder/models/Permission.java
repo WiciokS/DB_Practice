@@ -22,4 +22,12 @@ public class Permission {
     public void setPermissionName(String permissionName) {
         this.permissionName = permissionName;
     }
+
+    @Override
+    public String toString() {
+        return "Permission\n{\n" +
+                "permissionID: " + permissionID + "\n" +
+                "permissionName: " + permissionName + "\n" +
+                '}';
+    }
 }
